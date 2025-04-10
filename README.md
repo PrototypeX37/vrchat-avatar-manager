@@ -41,7 +41,7 @@ A modern desktop application for browsing and downloading your VRChat unencrypte
 
 1. Download the latest release from the [Releases page](https://github.com/yourusername/vrchat-avatar-manager/releases)
 2. Extract the ZIP file
-3. Run `VRChat-Avatar-Manager.exe`
+3. Run `SMP.exe`
 
 ## Setup and Configuration
 
@@ -96,9 +96,11 @@ A modern desktop application for browsing and downloading your VRChat unencrypte
 - **Login Issues**: 
   - Ensure your VRChat credentials are correct
   - If using 2FA, check that your authenticator app is synced correctly
+  - Rate limited
+   
 
 - **Download Problems**:
-  - Verify you have permission to access the avatar
+  - Verify you have permission to access the avatar (It is uploaded to your account)
   - Check your internet connection
   - Review the logs tab for detailed error messages
 
