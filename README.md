@@ -1,6 +1,6 @@
 # VRChat Avatar Manager
 
-A modern desktop application for browsing and downloading your VRChat avatars.
+A modern desktop application for browsing and downloading your VRChat unencrypted avatar bundles from VRC Servers
 
 ## Features
 
