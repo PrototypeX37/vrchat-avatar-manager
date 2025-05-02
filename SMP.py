@@ -26,6 +26,7 @@ from vrchatapi.api import authentication_api, files_api, avatars_api
 from vrchatapi.exceptions import UnauthorizedException, ApiException
 from vrchatapi.models.two_factor_auth_code import TwoFactorAuthCode
 from vrchatapi.models.two_factor_email_code import TwoFactorEmailCode
+import api_patch
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -33,7 +34,7 @@ logger = logging.getLogger('vrchat_avatar_manager')
 
 # Constants
 APP_NAME = "VRChat Avatar Manager"
-APP_VERSION = "0.1.0"
+APP_VERSION = "0.1.1"
 DATA_FOLDER = "data"
 CONFIG_FILE = os.path.join(DATA_FOLDER, "config.json")
 IMAGES_FOLDER = os.path.join(DATA_FOLDER, "images")
@@ -2073,7 +2074,9 @@ class VRChatManager(QMainWindow):
                     self.filtered_avatars.append(avatar)
             
             # Update status
-            self.avatars_status.setText(f"Found {len(self.filtered_avatars)} of {len(self.avatars_data)} avatars matching '{filter_text}'")
+            self.avatars_status.setText(
+                f"Found {len(self.filtered_avatars)} of {len(self.avatars_data)} avatars matching '{filter_text}'"
+            )
         else:
             # No filter, use all avatars
             self.filtered_avatars = self.avatars_data
@@ -2176,8 +2179,6 @@ class VRChatManager(QMainWindow):
         # Use simpler display function that we know works
         self.display_avatars(current_page_avatars)
     
-
-
     def clear_avatar_grid(self):
         """Completely remove all widgets from the grid"""
         # Process any pending events first
@@ -2215,7 +2216,7 @@ class VRChatManager(QMainWindow):
         self.avatar_container.setAttribute(Qt.WidgetAttribute.WA_OpaquePaintEvent, True)
         self.avatar_container.setAttribute(Qt.WidgetAttribute.WA_StaticContents, True)
         
-        # Connect scroll events for smoother scrolling
+        # Connect to scroll events
         scrollbar = self.scroll_area.verticalScrollBar()
         scrollbar.valueChanged.connect(self.on_scroll_start)
         
@@ -2770,4 +2771,7 @@ if __name__ == "__main__":
     # Make global theme and mode variable accessible to all classes
     app_theme = THEME
     is_dark_mode = True
+    
+    # Apply patches to the VRChat API client
+    api_patch.apply_patches()
     main()
