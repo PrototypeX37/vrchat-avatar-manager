@@ -23,7 +23,7 @@ A modern desktop application for browsing and downloading your VRChat unencrypte
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/vrchat-avatar-manager.git
+   git clone https://github.com/PrototypeX37/vrchat-avatar-manager.git
    cd vrchat-avatar-manager
    ```
 
@@ -34,14 +34,23 @@ A modern desktop application for browsing and downloading your VRChat unencrypte
 
 3. Run the application:
    ```
-   python smp.py
+   python SMP.py
    ```
 
 ### Option 2: Binary Release
 
-1. Download the latest release from the [Releases page](https://github.com/yourusername/vrchat-avatar-manager/releases)
-2. Extract the ZIP file
-3. Run `SMP.exe`
+1. Open the latest release on the [Releases page](https://github.com/PrototypeX37/vrchat-avatar-manager/releases)
+2. Download `SMP.exe` (Windows, no Python needed)
+3. Put it in its own folder and run it (settings are saved in a `data` folder next to it)
+
+### Building the exe yourself
+
+```
+pip install -r requirements.txt pyinstaller
+python build.py
+```
+
+The executable is written to `dist/SMP.exe`.
 
 ## Setup and Configuration
 

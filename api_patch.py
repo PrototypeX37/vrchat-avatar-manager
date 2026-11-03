@@ -1,36 +1,32 @@
 """
 VRChat API client patch module.
-This module patches the vrchatapi package to handle None values for current_avatar_asset_url.
+
+VRChat regularly starts returning null for fields that the generated vrchatapi
+models mark as required (e.g. `bio`, `current_avatar_asset_url`). The models then
+raise "Invalid value for `x`, must not be `None`" while parsing the response and
+login fails. Instead of patching fields one by one, this turns off the client-side
+validation entirely, so an outdated library keeps working when the API changes.
 """
 import logging
-from vrchatapi.models.current_user import CurrentUser
+import vrchatapi
 
 logger = logging.getLogger('vrchat_avatar_manager')
 
+
+def make_configuration(**kwargs):
+    """Create a vrchatapi Configuration with client-side validation disabled."""
+    configuration = vrchatapi.Configuration(**kwargs)
+    configuration.client_side_validation = False
+    return configuration
+
+
 def apply_patches():
     """
-    Apply monkey patches to the vrchatapi package to handle API changes.
+    Disable strict client-side validation for every model the library creates.
+    Models that are parsed from API responses don't receive the ApiClient's
+    configuration; they fall back to Configuration.get_default_copy(), so the
+    default has to be changed as well.
     """
     logger.info("Applying VRChat API client patches")
-    
-    # Direct patch of the property setter by replacing it completely
-    # We need to find where the property is defined
-    property_dict = CurrentUser.__dict__
-    
-    # Store original getter
-    original_getter = property_dict['current_avatar_asset_url'].fget
-    
-    # Define a patched setter that allows None values
-    def patched_setter(self, current_avatar_asset_url):
-        if current_avatar_asset_url is None:
-            logger.warning("Received None for current_avatar_asset_url, using empty string instead")
-            self._current_avatar_asset_url = ""
-        else:
-            # Regular behavior - store the value directly
-            self._current_avatar_asset_url = current_avatar_asset_url
-    
-    # Create and apply the patched property
-    patched_property = property(original_getter, patched_setter)
-    setattr(CurrentUser, 'current_avatar_asset_url', patched_property)
-    
-    logger.info("VRChat API client patches applied successfully - current_avatar_asset_url property patched")
+    vrchatapi.Configuration.set_default(make_configuration())
+    logger.info("VRChat API client patched: null fields from the API are accepted")

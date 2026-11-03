@@ -1,0 +1,13 @@
+# Local settings (contains saved VRChat credentials) and image cache
+data/
+
+__pycache__/
+*.pyc
+.venv/
+venv/
+build/
+dist/
+*.spec
+
+# Downloaded avatar bundles
+*.vrca
